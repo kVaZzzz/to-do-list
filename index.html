@@ -13,12 +13,12 @@
 <div id="app">
     <form @submit.prevent="addCard">
         <label for="card-title">Заголовок:</label>
-        <input id="card-title" type="text" v-model="newCardTitle">
+        <input id="card-title" type="text" v-model="newCardTitle":disabled="columeTaskCount===5 && !TaskCheck">
 
         <label for="card-items">Пункты списка (каждый пункт с новой строки):</label>
-        <textarea id="card-items" v-model="newItemText"></textarea>
+        <textarea id="card-items" v-model="newItemText":disabled="columeTaskCount===5 && !TaskCheck"></textarea>
 
-        <button type="submit">Добавить карточку</button>
+        <button type="submit":disabled="columeTaskCount===5 && !TaskCheck">Добавить карточку</button>
     </form>
     <div class="column">
         <h2>Первый столбец</h2>
@@ -26,7 +26,7 @@
             <h3>{{ card.title }}</h3>
             <ul>
                 <li v-for="item in card.items" :key="item.id">
-                    <input type="checkbox" v-model="item.completed" @change="handleCardPosition(card)">
+                    <input type="checkbox" v-model="item.completed"@change="handleCardPosition(card)":disabled="columeTaskCount===5 && !TaskCheck">
                     <span :class="{ completed: item.completed }">{{ item.text }}</span>
                 </li>
             </ul>
