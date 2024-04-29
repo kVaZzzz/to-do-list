@@ -1,0 +1,29 @@
+body{
+    margin: 0;
+}
+.logo {
+    text-align: center;
+}
+.form{
+    text-align: center;
+}
+
+.Done{
+    position: absolute;
+    right: 0;
+    height: 700px;
+    width: 600px;
+}
+
+.Do{
+    position: absolute;
+    right: 34%;
+    height: 700px;
+    width: 600px;
+}
+
+.toDo{
+    position: absolute;
+    height: 700px;
+    width: 600px;
+}
