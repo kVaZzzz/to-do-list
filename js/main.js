@@ -4,22 +4,35 @@ let app = new Vue({
         todo: "",
         needDoList: [],
         needDoListDo: [],
-        needDoListDone:[]
+        needDoListDone:[],
+        schetchik: 0
     },
     methods: {
-        addTask(){
+        addTask() {
             this.needDoList.push(this.todo);
         },
-        doCheck(){
-            for(let element in this.needDoList) {
+        doCheck() {
+            for (let element in this.needDoList) {
                 this.needDoList.splice(this.needDoList[element], 1)
             }
             this.needDoListDo.push(this.todo)
         },
-        doneCheck(){
-            for(let element in this.needDoListDo) {
+        doneCheck() {
+            for (let element in this.needDoListDo) {
                 this.needDoListDo.splice(this.needDoListDo[element], 1)
             }
             this.needDoListDone.push(this.todo)
+        },
+        schetRadio() {
+            this.schetchik += 1
+            console.log(this.schetchik)
+            if (this.schetchik >= 3) {
+                for (let element in this.needDoList) {
+                    this.needDoList.splice(this.needDoList[element], 1)
+                }
+                this.needDoListDo.push(this.todo)
+                this.schetchik = 0
+            }
         }
-    }})
+    }
+    })
