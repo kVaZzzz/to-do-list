@@ -7,7 +7,8 @@ new Vue({
             column3: [],
             newCardTitle: '',
             newItemText: '',
-            check: true
+            check: true,
+
         }
     },
     mounted(){
@@ -39,8 +40,9 @@ new Vue({
             const totalItems = card.items.length;
             const completedItems = card.items.filter(item => item.completed).length;
 
-            if (completedItems / totalItems > 0.5 && this.column1.includes(card)) {
-                if(this.column2.length ===5 && completedItems / totalItems > 0.5 && this.column1.includes(card) ){ this.check = false}
+            if (completedItems / totalItems >= 0.5 && this.column1.includes(card)) {
+                if (card.items.text === ''){console.log('asd')}
+                if(this.column2.length ===5 && completedItems / totalItems >= 0.5 && this.column1.includes(card) ){ this.check = false}
                 else {
                     this.column1.splice(this.column1.indexOf(card), 1);
                     this.column2.push(card);
@@ -58,15 +60,16 @@ new Vue({
                 const newCard = {
                     id: Date.now(),
                     title: this.newCardTitle,
-                    items: this.newItemText.split('\n').filter(item => item.trim() !== '').map(item => ({ text: item, completed: false }))
+                    items: [
+                        { text: '', completed: false, editing: true },
+                        { text: '', completed: false, editing: true },
+                        { text: '', completed: false, editing: true }
+                    ],
                 };
-                if (this.newCardTitle !== '' && newCard.items.length >= 3 && newCard.items.length <= 5) {
+                if (this.newCardTitle !== '' ) {
                     this.column1.push(newCard);
                 }
-                else alert("Введите правильные значения!!!")
-                {
 
-                }
                 this.handleCardPosition(newCard);
                 this.newCardTitle = '';
                 this.newItemText = '';
@@ -77,6 +80,12 @@ new Vue({
 
 
 
+
+        },
+        addItem(card){
+            if(this.newItemText != '' && card.items.length <= 4){
+                card.items.push({id: Date.now(), text: this.newItemText, checked: false})
+                this.newItemText = '';}
         },
         saveLocalStorage() {
             const parsed = JSON.stringify(this.column1);
@@ -86,6 +95,8 @@ new Vue({
             localStorage.setItem('column2', parsed1);
             localStorage.setItem('column3', parsed2);
         },
+
+
 
 
 

@@ -1,24 +1,41 @@
-
 .column {
     width: 33.33%;
     float: left;
     padding: 10px;
     box-sizing: border-box;
-    background: aqua;
+    background: #F5F5DC;
 }
 .card {
-    background: gold;
-    border: 10px solid #ccc;
+    border: 10px solid #FFE4C4;
     padding: 10px;
     margin-bottom: 10px;
 }
 .completed {
-    background-color: aqua;
+    background-color: #F5F5DC;
+    text-decoration: line-through;
 }
 
 .Form1{
     padding: 10px;
     text-align: center;
-    background: gold;
     height: 50px;
+}
+
+
+/* Модальное тело */
+.modal-body {padding: 2px 16px;}
+
+
+
+.container{
+    text-align: center;
+}
+
+.myBtn{
+
+    margin-left: 46%;
+}
+
+close{
+    animation-name: animatebottom;
 }

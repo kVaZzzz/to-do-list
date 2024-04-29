@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Storing notes</title>
+    <title>ToDo</title>
     <link rel="stylesheet" href="css/main.css">
     <script defer src="js/vue.js"></script>
     <script defer src="js/main.js"></script>
@@ -11,27 +11,41 @@
 
 <body>
 <div id="app">
-    <form class="Form1" @submit.prevent="addCard">
-        <label for="card-title">Заголовок:</label>
-        <input id="card-title" type="text" v-model="newCardTitle":disabled="columeTaskCount===5 && !TaskCheck">
 
-        <label for="card-items">Пункты списка (каждый пункт с новой строки):</label>
+    <div class="pupupu">
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <button class="close" id="close">Закрыть</button>
+                <form class="Form1" @submit.prevent="addCard">
+                    <label for="card-title">Заголовок:</label>
+                    <input id="card-title" type="text" v-model="newCardTitle":disabled="columeTaskCount===5 && !TaskCheck">
+                    <button type="submit":disabled="columeTaskCount===5 && !TaskCheck">Добавить карточку</button>
+                </form>
 
-        <textarea  id="card-items" v-model="newItemText":disabled="columeTaskCount===5 && !TaskCheck"></textarea>
+            </div>
 
-        <button type="submit":disabled="columeTaskCount===5 && !TaskCheck">Добавить карточку</button>
-    </form>
+        </div>
+    </div>
+
     <div class="column">
         <h2>Первый столбец</h2>
         <div v-for="card in column1" :key="card.id" class="card">
             <h3>{{ card.title }}</h3>
             <ul>
-                <li v-for="item in card.items" :key="item.id">
-                    <input type="checkbox" v-model="item.completed"@change="handleCardPosition(card)":disabled="columeTaskCount===5 && !TaskCheck">
-                    <span :class="{ completed: item.completed }">{{ item.text }}</span>
-                </li>
+                <div v-for="item in card.items" :key="item.id" id="check">
+                    <input id="itemTesting"  type="text" v-model="item.text" required >
+
+                    <input type="checkbox" v-model="item.completed"@change="handleCardPosition(card)":disabled="columeTaskCount===5 && !TaskCheck || item.text === ''"   >
+                    <label  :class="{ completed: item.completed }" ></label>
+
+                </div>
             </ul>
+            <form class="Form1" @submit.prevent="addItem(card)">
+                <input   type="text"  v-model="newItemText">
+                <button type="submit":disabled="columeTaskCount===5 && !TaskCheck">Добавить Пункт</button>
+            </form>
         </div>
+
     </div>
     <div class="column">
         <h2>Второй столбец</h2>
@@ -40,7 +54,7 @@
             <ul>
                 <li v-for="item in card.items" :key="item.id">
                     <input type="checkbox" v-model="item.completed" @change="handleCardPosition(card)">
-                    <span :class="{ completed: item.completed }">{{ item.text }}</span>
+                    <label :class="{ completed: item.completed }">{{ item.text }}</label>
                 </li>
             </ul>
         </div>
