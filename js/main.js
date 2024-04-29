@@ -1,55 +1,50 @@
-let app = new Vue({
+
+new Vue({
     el: '#app',
-    data: {
-        todo: "",
-        needDoList: [],
-        needDoListDo: [],
-        needDoListDone:[],
-        schetchik: 0
+    data() {
+        return {
+            column1: [],
+            column2: [],
+            column3: [],
+            newCardTitle: '',
+            newItemText: '', // добавляемое пользователем значение текста элемента// добавляемое пользователем значение заголовка
+        }
     },
     methods: {
-        addTask() {
-            if (this.todo === "") {
-                alert("Введите значение")
-                return
-            }
-            if (this.needDoList.length >= 3) {
-                alert("Больше 3 нельзя")
-            } else {
-                this.needDoList.push(this.todo);
+        handleCardPosition(card) {
+            const totalItems = card.items.length;
+            const completedItems = card.items.filter(item => item.completed).length;
 
+            if (completedItems / totalItems > 0.5 && this.column1.includes(card)) {
+                this.column1.splice(this.column1.indexOf(card), 1);
+                this.column2.push(card);
+            } else if (completedItems / totalItems === 1 && this.column2.includes(card)) {
+                this.column2.splice(this.column2.indexOf(card), 1);
+                this.column3.push(card);
+                card.completedDate = new Date().toLocaleString(); // добавляем дату и время завершения
             }
-            this.todo.value = ""
         },
-        schetRadio() {
-            if (this.needDoListDo.length >= 5) {
-                alert("Больше 5 нельзя")
-                return
-            } else {
-                this.schetchik += 1
-                if (this.schetchik >= 3 && this.schetchik < 5) {
-                    this.needDoListDo.push(this.todo)
-                    this.schetchik = 0
-                    for (let element in this.needDoList) {
-                        this.needDoList.splice(this.needDoList[element], 1)
-                    }
-                    this.needDoListDo.push(this.todo)
-                    this.schetchik = 0
+        addCard() {
+            if (this.newCardTitle !== '' && this.column1.length < 3) {
+                const newCard = {
+                    id: Date.now(),
+                    title: this.newCardTitle,
+                    items: this.newItemText.split('\n').filter(item => item.trim() !== '').map(item => ({ text: item, completed: false }))
+                };
+                if (this.newCardTitle !== '' && newCard.items.length >= 3 && newCard.items.length <= 5) {
+                    this.column1.push(newCard);
+                }
+                else alert("Введите правильные значения!!!")
+                {
 
                 }
+                this.handleCardPosition(newCard);
+                this.newCardTitle = '';
+                this.newItemText = '';
             }
-
         },
-        schetRadioDo() {
-            this.schetchik += 1
-            if (this.schetchik >= 2) {
-                this.schetchik = 0
-                this.needDoListDone.push(this.todo)
-                for (let element in this.needDoListDo) {
-                    this.needDoListDo.splice(this.needDoListDo[element], 1)
-                }
 
-            }
-        }
+
+
     }
 })

@@ -1,29 +1,16 @@
-body{
-    margin: 0;
+.column {
+    width: 33.33%;
+    float: left;
+    padding: 10px;
+    box-sizing: border-box;
+    background: aqua;
 }
-.logo {
-    text-align: center;
+.card {
+    background: gold;
+    border: 10px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
 }
-.form{
-    text-align: center;
-}
-
-.Done{
-    position: absolute;
-    right: 0;
-    height: 700px;
-    width: 600px;
-}
-
-.Do{
-    position: absolute;
-    right: 34%;
-    height: 700px;
-    width: 600px;
-}
-
-.toDo{
-    position: absolute;
-    height: 700px;
-    width: 600px;
+.completed {
+    background-color: aqua;
 }

@@ -1,96 +1,67 @@
-<!doctype html>
-<html lang="ru">
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Storing notes</title>
+    <link rel="stylesheet" href="css/main.css">
     <script defer src="js/vue.js"></script>
     <script defer src="js/main.js"></script>
-    <link rel="stylesheet" href="css/main.css">
-    <title>Product App</title>
 </head>
+
 <body>
 <div id="app">
-    <div class="header">
-        <div class="container">
-            <div class="logo">ToDo LIST</div>
-            <div class="form">
-                <label>
-                    <input type="text" v-model="todo">
-                </label>
-                <button v-on:click="addTask">Add a new task</button>
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="toDo">
-            <h2>
-                <span>TO DO</span>
-                <span class="mask-num">10</span>
-            </h2>
-            <ul class="mask-list">
-                <div v-for="(detail, i) in needDoList " :key="i">
-                    <span>№ {{ i+1 }}|</span>
-                    <span>Дело: {{ detail }}</span>
-                    <div>
-                        <input type="checkbox" v-on:click="schetRadio">
-                        <input type="checkbox" v-on:click="schetRadio">
-                        <input type="checkbox" v-on:click="schetRadio">
-                        <input type="checkbox" v-on:click="schetRadio">
-                        <input type="checkbox" v-on:click="schetRadio">
-                        <input type="checkbox" v-on:click="schetRadio">Запланировал<br>
-                        <input type="checkbox" v-on:click="schetRadio">Подготовка<br>
-                        <input type="checkbox" v-on:click="schetRadio">Начал<br>
-                        <input type="checkbox" v-on:click="schetRadio">В процесе<br>
-                        <input type="checkbox" v-on:click="schetRadio">Сделал<br>
-                    </div>
+    <form @submit.prevent="addCard">
+        <label for="card-title">Заголовок:</label>
+        <input id="card-title" type="text" v-model="newCardTitle">
 
-                </div>
+        <label for="card-items">Пункты списка (каждый пункт с новой строки):</label>
+        <textarea id="card-items" v-model="newItemText"></textarea>
+
+        <button type="submit">Добавить карточку</button>
+    </form>
+    <div class="column">
+        <h2>Первый столбец</h2>
+        <div v-for="card in column1" :key="card.id" class="card">
+            <h3>{{ card.title }}</h3>
+            <ul>
+                <li v-for="item in card.items" :key="item.id">
+                    <input type="checkbox" v-model="item.completed" @change="handleCardPosition(card)">
+                    <span :class="{ completed: item.completed }">{{ item.text }}</span>
+                </li>
             </ul>
         </div>
-        <div class="DoClass">
-            <div class="Do">
-                <h2>
-                    <span>Do</span>
-                    <span class="mask-num">10</span>
-                </h2>
-                <ul class="mask-list complete-list">
-                    <div v-for="(detail, i) in needDoListDo " :key="i">
-                        <span>№ {{ i+1 }}|</span>
-                        <span>Дело: {{ detail }}</span>
-                        <div>
-                            <input type="checkbox" v-on:click="schetRadioDo" checked>Запланировал<br>
-                            <input type="checkbox" v-on:click="schetRadioDo" checked>Подготовка<br>
-                            <input type="checkbox" v-on:click="schetRadioDo" checked>Начал<br>
-                            <input type="checkbox" v-on:click="schetRadioDo">В процесе<br>
-                            <input type="checkbox" v-on:click="schetRadioDo">Сделал<br>
-
-                        </div>
-
-                    </div>
-                </ul>
-            </div>
-        </div>
-        <div class="Done">
-            <h2>
-                <span>Done</span>
-                <span class="mask-num">10</span>
-            </h2>
-            <div v-for="(detail, i) in needDoListDone " :key="i">
-                <span>№ {{ i+1 }}|</span>
-                <span>Дело: {{ detail }}</span>
-                <div>
-                    <input type="checkbox"  checked>Запланировал<br>
-                    <input type="checkbox"  checked>Подготовка<br>
-                    <input type="checkbox"  checked>Начал<br>
-                    <input type="checkbox"  checked>В процесе<br>
-                    <input type="checkbox"  checked>Сделал<br>
-
-                </div>
-            </div>
+    </div>
+    <div class="column">
+        <h2>Второй столбец</h2>
+        <div v-for="card in column2" :key="card.id" class="card">
+            <h3>{{ card.title }}</h3>
+            <ul>
+                <li v-for="item in card.items" :key="item.id">
+                    <input type="checkbox" v-model="item.completed" @change="handleCardPosition(card)">
+                    <span :class="{ completed: item.completed }">{{ item.text }}</span>
+                </li>
+            </ul>
         </div>
     </div>
+    <div class="column">
+        <h2>Третий столбец</h2>
+        <div v-for="card in column3" :key="card.id" class="card">
+            <h3>{{ card.title }}</h3>
+            <ul>
+                <li v-for="item in card.items" :key="item.id">
+                    <input type="checkbox" v-model="item.completed">
+                    <span :class="{ completed: item.completed }">{{ item.text}}</span>
+                </li>
+            </ul>
+            <div v-if="card.completedDate">
+                Последнее выполнение: {{ card.completedDate }}
+            </div>
+        </div>
+
+    </div>
 </div>
+
 </body>
+
 </html>
