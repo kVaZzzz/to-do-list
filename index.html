@@ -11,12 +11,13 @@
 
 <body>
 <div id="app">
-    <form @submit.prevent="addCard">
+    <form class="Form1" @submit.prevent="addCard">
         <label for="card-title">Заголовок:</label>
         <input id="card-title" type="text" v-model="newCardTitle":disabled="columeTaskCount===5 && !TaskCheck">
 
         <label for="card-items">Пункты списка (каждый пункт с новой строки):</label>
-        <textarea id="card-items" v-model="newItemText":disabled="columeTaskCount===5 && !TaskCheck"></textarea>
+
+        <textarea  id="card-items" v-model="newItemText":disabled="columeTaskCount===5 && !TaskCheck"></textarea>
 
         <button type="submit":disabled="columeTaskCount===5 && !TaskCheck">Добавить карточку</button>
     </form>

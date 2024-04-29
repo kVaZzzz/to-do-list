@@ -1,3 +1,4 @@
+
 .column {
     width: 33.33%;
     float: left;
@@ -13,4 +14,11 @@
 }
 .completed {
     background-color: aqua;
+}
+
+.Form1{
+    padding: 10px;
+    text-align: center;
+    background: gold;
+    height: 50px;
 }
