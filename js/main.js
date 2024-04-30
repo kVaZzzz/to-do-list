@@ -8,7 +8,6 @@ new Vue({
             newCardTitle: '',
             newItemText: '',
             check: true,
-
         }
     },
     mounted(){
@@ -33,7 +32,6 @@ new Vue({
                 localStorage.removeItem('column3');
             }
         }
-
     },
     methods: {
         handleCardPosition(card) {
@@ -41,16 +39,25 @@ new Vue({
             const completedItems = card.items.filter(item => item.completed).length;
 
             if (completedItems / totalItems >= 0.5 && this.column1.includes(card)) {
-                if(this.column2.length ===5 && completedItems / totalItems >= 0.5 && this.column1.includes(card) ){ this.check = false}
-                else {
+                if(this.column2.length === 5 && completedItems / totalItems >= 0.5 && this.column1.includes(card)) {
+                    this.check = false;
+                } else {
                     this.column1.splice(this.column1.indexOf(card), 1);
                     this.column2.push(card);
-                    this.saveLocalStorage();}
+                    this.saveLocalStorage();
+                }
             } else if (completedItems / totalItems === 1 && this.column2.includes(card)) {
                 this.column2.splice(this.column2.indexOf(card), 1);
-                this.check = true
+                this.check = true;
                 this.column3.push(card);
-                card.completedDate = new Date().toLocaleString(); // добавляем дату и время завершения
+                card.completedDate = new Date().toLocaleString();
+                this.saveLocalStorage();
+            }
+        },
+        disable(card) {
+            if(this.column2.length === 5 && !this.TaskCheck) {
+                this.column1.splice(this.column1.indexOf(card), 1);
+                this.column2.push(card);
                 this.saveLocalStorage();
             }
         },
@@ -65,7 +72,7 @@ new Vue({
                         { text: '', completed: false, editing: true }
                     ],
                 };
-                if (this.newCardTitle !== '' ) {
+                if (this.newCardTitle !== '') {
                     this.column1.push(newCard);
                 }
 
@@ -73,18 +80,13 @@ new Vue({
                 this.newCardTitle = '';
                 this.newItemText = '';
                 this.saveLocalStorage();
-
             }
-
-
-
-
-
         },
-        addItem(card){
-            if(this.newItemText != '' && card.items.length <= 4){
-                card.items.push({id: Date.now(), text: this.newItemText, checked: false})
-                this.newItemText = '';}
+        addItem(card) {
+            if(this.newItemText !== '' && card.items.length <= 4) {
+                card.items.push({ id: Date.now(), text: this.newItemText, completed: false, editing: true });
+                this.newItemText = '';
+            }
         },
         saveLocalStorage() {
             const parsed = JSON.stringify(this.column1);
@@ -94,18 +96,13 @@ new Vue({
             localStorage.setItem('column2', parsed1);
             localStorage.setItem('column3', parsed2);
         },
-
-
-
-
-
     },
     computed: {
-        columeTaskCount(){
-            return this.column2.length
+        columeTaskCount() {
+            return this.column2.length;
         },
-        TaskCheck(){
-            return this.check
+        TaskCheck() {
+            return this.check;
         }
     }
 })
