@@ -11,25 +11,25 @@ new Vue({
 
         }
     },
-    mounted() {
+    mounted(){
         if (localStorage.getItem('column1')) {
             try {
                 this.column1 = JSON.parse(localStorage.getItem('column1'));
-            } catch (e) {
+            } catch(e) {
                 localStorage.removeItem('column1');
             }
         }
         if (localStorage.getItem('column2')) {
             try {
                 this.column2 = JSON.parse(localStorage.getItem('column2'));
-            } catch (e) {
+            } catch(e) {
                 localStorage.removeItem('column2');
             }
         }
         if (localStorage.getItem('column3')) {
             try {
                 this.column3 = JSON.parse(localStorage.getItem('column3'));
-            } catch (e) {
+            } catch(e) {
                 localStorage.removeItem('column3');
             }
         }
@@ -37,17 +37,15 @@ new Vue({
     },
     methods: {
         handleCardPosition(card) {
-            totalItems = card.items.length;
-            completedItems = card.items.filter(item => item.completed).length;
+            const totalItems = card.items.length;
+            const completedItems = card.items.filter(item => item.completed).length;
 
             if (completedItems / totalItems >= 0.5 && this.column1.includes(card)) {
-                if (this.column2.length === 5 && completedItems / totalItems >= 0.5 && this.column1.includes(card)) {
-                    this.check = false
-                } else {
+                if(this.column2.length ===5 && completedItems / totalItems >= 0.5 && this.column1.includes(card) ){ this.check = false}
+                else {
                     this.column1.splice(this.column1.indexOf(card), 1);
                     this.column2.push(card);
-                    this.saveLocalStorage();
-                }
+                    this.saveLocalStorage();}
             } else if (completedItems / totalItems === 1 && this.column2.includes(card)) {
                 this.column2.splice(this.column2.indexOf(card), 1);
                 this.check = true
@@ -58,16 +56,16 @@ new Vue({
         },
         addCard() {
             if (this.newCardTitle !== '' && this.column1.length < 3) {
-                newCard = {
+                const newCard = {
                     id: Date.now(),
                     title: this.newCardTitle,
                     items: [
-                        {text: '', completed: false, editing: true},
-                        {text: '', completed: false, editing: true},
-                        {text: '', completed: false, editing: true}
+                        { text: '', completed: false, editing: true },
+                        { text: '', completed: false, editing: true },
+                        { text: '', completed: false, editing: true }
                     ],
                 };
-                if (this.newCardTitle !== '') {
+                if (this.newCardTitle !== '' ) {
                     this.column1.push(newCard);
                 }
 
@@ -79,12 +77,14 @@ new Vue({
             }
 
 
+
+
+
         },
-        addItem(card) {
-            if (this.newItemText != '' && card.items.length <= 4) {
+        addItem(card){
+            if(this.newItemText != '' && card.items.length <= 4){
                 card.items.push({id: Date.now(), text: this.newItemText, checked: false})
-                this.newItemText = '';
-            }
+                this.newItemText = '';}
         },
         saveLocalStorage() {
             const parsed = JSON.stringify(this.column1);
@@ -94,5 +94,18 @@ new Vue({
             localStorage.setItem('column2', parsed1);
             localStorage.setItem('column3', parsed2);
         },
+
+
+
+
+
     },
+    computed: {
+        columeTaskCount(){
+            return this.column2.length
+        },
+        TaskCheck(){
+            return this.check
+        }
+    }
 })
