@@ -15,16 +15,11 @@
     text-decoration: line-through;
 }
 
-.Form1{
+.form1{
     padding: 10px;
     text-align: center;
     height: 50px;
 }
-
-
-/* Модальное тело */
-.modal-body {padding: 2px 16px;}
-
 
 
 .container{
@@ -34,8 +29,4 @@
 .myBtn{
 
     margin-left: 46%;
-}
-
-close{
-    animation-name: animatebottom;
 }

@@ -12,11 +12,10 @@
 <body>
 <div id="app">
 
-    <div class="pupupu">
-        <div id="myModal" class="modal">
-            <div class="modal-content">
-                <button class="close" id="close">Закрыть</button>
-                <form class="Form1" @submit.prevent="addCard">
+    <div class="container">
+        <div class="title-unput">
+            <div class="title-input">
+                <form class="form1" @submit.prevent="addCard">
                     <label for="card-title">Заголовок:</label>
                     <input id="card-title" type="text" v-model="newCardTitle":disabled="columeTaskCount===5 && !TaskCheck">
                     <button type="submit":disabled="columeTaskCount===5 && !TaskCheck">Добавить карточку</button>
