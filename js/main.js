@@ -35,39 +35,31 @@ new Vue({
     },
     methods: {
         handleCardPosition(card) {
-            const totalItems = card.items.length;
-            const completedItems = card.items.filter(item => item.completed).length;
+            const totalItems = card.items.filter(item => item.text.trim() !== '').length;
+            const completedItems = card.items.filter(item => item.completed && item.text.trim() !== '').length;
 
-            // Удаляем пустые задачи (items) из карточки
-            card.items = card.items.filter(item => item.text !== '');
-
-            if (completedItems / card.items.length >= 0.5 && this.column1.includes(card)) {
-                if (this.column2.length <= 4 && completedItems / card.items.length >= 0.5 && this.column1.includes(card)) {
-                    if (card.items.length >= 3) {
-                        this.column1.splice(this.column1.indexOf(card), 1);
-                        this.column2.push(card);
-                        this.saveLocalStorage();
-                    }
-                } else if (this.column2.length === 5 && completedItems / card.items.length >= 0.5 && this.column1.includes(card)) {
-                    this.check = false;
-                } else {
-                    if (card.items.length >= 3) {
-                        this.column1.splice(this.column1.indexOf(card), 1);
-                        this.column2.push(card);
-                        this.saveLocalStorage();
-                    }
-                }
-                if (completedItems / card.items.length === 1 && this.column2.includes(card)) {
+            if (completedItems / totalItems >= 0.5 && this.column1.includes(card)) {
+                if (this.column2.length < 5) {
+                    card.items = card.items.filter(item => item.text.trim() !== '');
                     this.column1.splice(this.column1.indexOf(card), 1);
                     this.column2.push(card);
                     this.saveLocalStorage();
                 }
-            } else if (completedItems / card.items.length === 1 && this.column2.includes(card)) {
+            } else if (completedItems / totalItems === 1 && this.column2.includes(card)) {
                 this.column2.splice(this.column2.indexOf(card), 1);
                 this.check = true;
                 this.column3.push(card);
                 card.completedDate = new Date().toLocaleString();
                 this.saveLocalStorage();
+
+                // Проверяем, есть ли карточки в первой колонке и места в второй колонке
+                if (this.column1.length > 0 && this.column2.length < 5) {
+                    // Перемещаем первую карточку из первой колонки во вторую колонку
+                    const cardToMove = this.column1[0];
+                    this.column1.splice(0, 1);
+                    this.column2.push(cardToMove);
+                    this.saveLocalStorage();
+                }
             }
         },
         completeAllTasks() {
@@ -90,7 +82,7 @@ new Vue({
             this.saveLocalStorage();
         },
         addCard() {
-            if (this.newCardTitle !== '' && this.column1.length < 3) {
+            if (this.newCardTitle !== '' && this.column1.length < 3 && this.column2.length < 5) {
                 const newCard = {
                     id: Date.now(),
                     title: this.newCardTitle,
@@ -111,8 +103,8 @@ new Vue({
             }
         },
         addItem(card) {
-            if(this.newItemText !== '' && card.items.length <= 4) {
-                card.items.push({ id: Date.now(), text: this.newItemText, completed: false, editing: true });
+            if (this.newItemText.trim() !== '' && card.items.length <= 4) {
+                card.items.push({ id: Date.now(), text: this.newItemText.trim(), completed: false, editing: true });
                 this.newItemText = '';
             }
         },
