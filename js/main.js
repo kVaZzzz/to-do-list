@@ -37,26 +37,30 @@ new Vue({
         handleCardPosition(card) {
             const totalItems = card.items.filter(item => item.text.trim() !== '').length;
             const completedItems = card.items.filter(item => item.completed && item.text.trim() !== '').length;
-
-            if (completedItems / totalItems >= 0.5 && this.column1.includes(card)) {
-                if (this.column2.length < 5) {
-                    card.items = card.items.filter(item => item.text.trim() !== '');
-                    this.column1.splice(this.column1.indexOf(card), 1);
-                    this.column2.push(card);
+            card.items = card.items.filter(item => item.text.trim() !== '');
+            // Проверяем, что в колонке не менее 3 задач
+            if (totalItems >= 3) {
+                if (completedItems / totalItems >= 0.5 && this.column1.includes(card)) {
+                    if (this.column2.length < 5) {
+                        this.column1.splice(this.column1.indexOf(card), 1);
+                        this.column2.push(card);
+                        this.saveLocalStorage();
+                    }
+                } else if (completedItems / totalItems === 1 && this.column2.includes(card)) {
+                    this.column2.splice(this.column2.indexOf(card), 1);
+                    this.check = true;
+                    this.column3.push(card);
+                    card.completedDate = new Date().toLocaleString();
                     this.saveLocalStorage();
-                }
-            } else if (completedItems / totalItems === 1 && this.column2.includes(card)) {
-                this.column2.splice(this.column2.indexOf(card), 1);
-                this.check = true;
-                this.column3.push(card);
-                card.completedDate = new Date().toLocaleString();
-                this.saveLocalStorage();
 
-                if (this.column1.length > 0 && this.column2.length < 5) {
-                    const cardToMove = this.column1[0];
-                    this.column1.splice(0, 1);
-                    this.column2.push(cardToMove);
-                    this.saveLocalStorage();
+                    // Проверяем, есть ли карточки в первой колонке и места в второй колонке
+                    if (this.column1.length > 0 && this.column2.length < 5) {
+                        // Перемещаем первую карточку из первой колонки во вторую колонку
+                        const cardToMove = this.column1[0];
+                        this.column1.splice(0, 1);
+                        this.column2.push(cardToMove);
+                        this.saveLocalStorage();
+                    }
                 }
             }
         },
@@ -104,6 +108,21 @@ new Vue({
             if (this.newItemText.trim() !== '' && card.items.length <= 4) {
                 card.items.push({ id: Date.now(), text: this.newItemText.trim(), completed: false, editing: true });
                 this.newItemText = '';
+
+                // Проверяем, что в карточке есть три или более задачи
+                if (card.items.filter(item => item.text.trim() !== '').length >= 3) {
+                    // Проверяем, что в column2 меньше 5 карточек
+                    if (this.column2.length < 5) {
+                        // Удаляем из массива задач те, которые не имеют названия
+                        card.items = card.items.filter(item => item.text.trim() !== '');
+                        // Удаляем карточку из column1
+                        this.column1.splice(this.column1.indexOf(card), 1);
+                        // Добавляем карточку в column2
+                        this.column2.push(card);
+                        // Сохраняем состояние в localStorage
+                        this.saveLocalStorage();
+                    }
+                }
             }
         },
         saveLocalStorage() {
