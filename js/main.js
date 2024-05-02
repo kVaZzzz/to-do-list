@@ -38,15 +38,31 @@ new Vue({
             const totalItems = card.items.length;
             const completedItems = card.items.filter(item => item.completed).length;
 
-            if (completedItems / totalItems >= 0.5 && this.column1.includes(card)) {
-                if(this.column2.length === 5 && completedItems / totalItems >= 0.5 && this.column1.includes(card)) {
+            // Удаляем пустые задачи (items) из карточки
+            card.items = card.items.filter(item => item.text !== '');
+
+            if (completedItems / card.items.length >= 0.5 && this.column1.includes(card)) {
+                if (this.column2.length <= 4 && completedItems / card.items.length >= 0.5 && this.column1.includes(card)) {
+                    if (card.items.length >= 3) {
+                        this.column1.splice(this.column1.indexOf(card), 1);
+                        this.column2.push(card);
+                        this.saveLocalStorage();
+                    }
+                } else if (this.column2.length === 5 && completedItems / card.items.length >= 0.5 && this.column1.includes(card)) {
                     this.check = false;
                 } else {
+                    if (card.items.length >= 3) {
+                        this.column1.splice(this.column1.indexOf(card), 1);
+                        this.column2.push(card);
+                        this.saveLocalStorage();
+                    }
+                }
+                if (completedItems / card.items.length === 1 && this.column2.includes(card)) {
                     this.column1.splice(this.column1.indexOf(card), 1);
                     this.column2.push(card);
                     this.saveLocalStorage();
                 }
-            } else if (completedItems / totalItems === 1 && this.column2.includes(card)) {
+            } else if (completedItems / card.items.length === 1 && this.column2.includes(card)) {
                 this.column2.splice(this.column2.indexOf(card), 1);
                 this.check = true;
                 this.column3.push(card);
@@ -55,7 +71,6 @@ new Vue({
             }
         },
         completeAllTasks() {
-            // Перенести все карточки из первой и второй колонок в третью
             this.column1.forEach(card => {
                 card.items.forEach(item => {
                     item.completed = true;
