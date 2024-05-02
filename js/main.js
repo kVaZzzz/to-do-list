@@ -52,9 +52,7 @@ new Vue({
                 card.completedDate = new Date().toLocaleString();
                 this.saveLocalStorage();
 
-                // Проверяем, есть ли карточки в первой колонке и места в второй колонке
                 if (this.column1.length > 0 && this.column2.length < 5) {
-                    // Перемещаем первую карточку из первой колонки во вторую колонку
                     const cardToMove = this.column1[0];
                     this.column1.splice(0, 1);
                     this.column2.push(cardToMove);
