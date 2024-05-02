@@ -54,12 +54,25 @@ new Vue({
                 this.saveLocalStorage();
             }
         },
-        disable(card) {
-            if(this.column2.length === 5 && !this.TaskCheck) {
-                this.column1.splice(this.column1.indexOf(card), 1);
-                this.column2.push(card);
-                this.saveLocalStorage();
-            }
+        completeAllTasks() {
+            // Перенести все карточки из первой и второй колонок в третью
+            this.column1.forEach(card => {
+                card.items.forEach(item => {
+                    item.completed = true;
+                });
+                this.column3.push(card);
+            });
+            this.column1 = [];
+
+            this.column2.forEach(card => {
+                card.items.forEach(item => {
+                    item.completed = true;
+                });
+                this.column3.push(card);
+            });
+            this.column2 = [];
+
+            this.saveLocalStorage();
         },
         addCard() {
             if (this.newCardTitle !== '' && this.column1.length < 3) {

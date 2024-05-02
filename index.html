@@ -39,6 +39,7 @@
                 <button type="submit" :disabled="columeTaskCount === 5 && !TaskCheck">Добавить Пункт</button>
             </form>
         </div>
+        <button @click="completeAllTasks">Завершить все задачи</button>
     </div>
 
     <div class="column">
