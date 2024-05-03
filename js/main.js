@@ -51,13 +51,24 @@ new Vue({
                     this.column3.push(card);
                     card.completedDate = new Date().toLocaleString();
                     this.saveLocalStorage();
-                    ке
                     if (this.column1.length > 0 && this.column2.length < 5) {
                         const cardToMove = this.column1[0];
                         this.column1.splice(0, 1);
                         this.column2.push(cardToMove);
                         this.saveLocalStorage();
                     }
+                }
+                if(completedItems / totalItems <= 0.5 && this.column2.includes(card))
+                {
+                    this.column2.splice(this.column2.indexOf(card), 1);
+                    this.column1.push(card);
+                    this.saveLocalStorage();
+                }
+                if(completedItems < totalItems && this.column3.includes(card))
+                {
+                    this.column3.splice(this.column3.indexOf(card), 1);
+                    this.column2.push(card);
+                    this.saveLocalStorage();
                 }
             }
         },

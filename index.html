@@ -61,8 +61,8 @@
             <h3>{{ card.title }}</h3>
             <ul>
                 <li v-for="item in card.items" :key="item.id">
-                    <input type="checkbox" v-model="item.completed">
-                    <span :class="{ completed: item.completed }">{{ item.text }}</span>
+                    <input type="checkbox"  v-model="item.completed" @change="handleCardPosition(card)" >
+                    <span :class="{ completed: item.completed }" >{{ item.text }}</span>
                 </li>
             </ul>
             <div v-if="card.completedDate">
